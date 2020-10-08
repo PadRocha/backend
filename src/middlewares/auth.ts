@@ -36,8 +36,8 @@ export async function authorized(req: Request, res: Response, next: Function) {
     return res.status(409).send({ message: "Error decrypting token" });
   }
 
-  delete payload.iat;
-  delete payload.exp;
+  // delete payload.iat;
+  // delete payload.exp;
 
   req.user = <IUser>{
     _id: payload.sub,
@@ -80,8 +80,8 @@ export async function authAdmin(req: Request, res: Response, next: Function) {
     return res.status(409).send({ message: "Error decrypting token" });
   }
 
-  delete payload.iat;
-  delete payload.exp;
+  // delete payload.iat;
+  // delete payload.exp;
 
   req.user = <IUser>{
     _id: payload.sub,

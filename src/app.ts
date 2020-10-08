@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from 'express';
 import morgan from "morgan";
 import cors from "cors";
 import helmet from "helmet";
@@ -14,6 +14,7 @@ const app = express();
 // Settings
 /*------------------------------------------------------------------*/
 
+app.set('pkg', require('../package.json'));
 app.set("trust proxy", true);
 app.set("env", config.ENV);
 app.set("port", process.env.PORT || 4000);
@@ -54,6 +55,14 @@ app.use(
 /*------------------------------------------------------------------*/
 // Routes
 /*------------------------------------------------------------------*/
+
+app.get('/', (req: Request, res: Response) => res.json({
+  name: app.get('pkg').name,
+  version: app.get('pkg').version,
+  author: app.get('pkg').author,
+  contributors: app.get('pkg').contributors,
+  deprecated: app.get('pkg').deprecated,
+}));
 
 app.use("/api", api);
 
