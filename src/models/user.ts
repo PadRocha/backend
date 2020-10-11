@@ -6,7 +6,7 @@ export interface IUser extends Document {
     readonly nickname: string,
     readonly sub?: string,
     password: string,
-    readonly role: string,
+    readonly role: number,
     comparePassword: Function
 }
 

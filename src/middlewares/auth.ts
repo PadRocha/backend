@@ -71,7 +71,7 @@ export async function authAdmin(req: Request, res: Response, next: Function) {
     if (
       !user ||
       user.nickname !== payload.nickname ||
-      payload.role !== "admin" || user.role !== "admin" ||
+      payload.role & config.ALLOW.ADMIN || user.role & config.ALLOW.ADMIN ||
       payload.exp <= dayjs().unix()
     ) {
       return res.status(423).send({ message: "Access denied" });

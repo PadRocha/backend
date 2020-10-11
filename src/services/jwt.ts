@@ -6,7 +6,7 @@ import config from "../config/config";
 export interface Token {
   sub: string;
   nickname: string;
-  role: string;
+  role: number;
   iat: number;
   exp: number;
 }
