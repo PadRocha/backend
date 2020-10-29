@@ -4,11 +4,9 @@
     "description": "Ts RES API",
     "main": "index.js",
     "scripts": {
-        "start": "SET NODE_ENV=production && node dist/index.js",
-        "upd": "ncu",
-        "upg": "ncu -u",
+        "start": "node dist/index.js",
         "dev": "tsc-watch --onSuccess \"node dist/index.js\"",
-        "docs": "apidoc -i src/ -o docs/",
+        "docs": "apidoc -i src/ -o docs/ && cmd.exe /c start ./docs/index.html",
         "build": "tsc"
     },
     "keywords": [],

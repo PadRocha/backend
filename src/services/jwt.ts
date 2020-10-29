@@ -1,21 +1,22 @@
-import { Secret, sign } from "jsonwebtoken";
-import dayjs from "dayjs";
-import { IUser } from "../models/user";
-import config from "../config/config";
+import dayjs from 'dayjs';
+import { Secret, sign } from 'jsonwebtoken';
+
+import config from '../config/config';
+import { IUser } from '../models/user';
 
 export interface Token {
   sub: string;
   nickname: string;
   role: number;
-  iat: number;
-  exp: number;
+  iat?: number;
+  exp?: number;
 }
 
-export default function createToken(user: IUser) {
+export default function createToken({ _id, nickname, role }: IUser) {
   var payload: Token = {
-    sub: user._id,
-    nickname: user.nickname,
-    role: user.role,
+    sub: _id,
+    nickname: nickname,
+    role: role,
     iat: dayjs().unix(),
     exp: dayjs().add(30, "day").unix(),
   };

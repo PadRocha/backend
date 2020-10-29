@@ -3,5 +3,5 @@
     "version": "0.1.0",
     "description": "REST API using TypeScript, node, mongodb",
     "title": "TS API",
-    "order": []
+    "order": ["User"]
 }
