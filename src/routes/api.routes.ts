@@ -1,11 +1,11 @@
-/*------------------------------------------------------------------*/
-// Api Routes
-/*------------------------------------------------------------------*/
 import { Router } from 'express';
 
 import * as userController from '../controllers/user.controller';
-import { authAdmin, authorized } from '../middlewares/auth';
+import { authAdmin, authorized, authRead } from '../middlewares/auth';
 
+/*------------------------------------------------------------------*/
+// Api Routes
+/*------------------------------------------------------------------*/
 const router = Router();
 
 /*------------------------------------------------------------------*/
@@ -19,7 +19,7 @@ router.route('/login')
     .post(userController.loginUser);
 
 router.route('/user')
-    .get(authorized, userController.returnUser);
+    .get(authorized, authRead, userController.returnUser);
 
 /*------------------------------------------------------------------*/
 

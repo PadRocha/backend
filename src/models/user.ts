@@ -26,7 +26,7 @@ const userSchema = new Schema<IUser>({
     },
     role: {
         type: Number,
-        default: 1,
+        default: 2,
         required: true
     }
 });
@@ -38,7 +38,7 @@ userSchema.pre<IUser>('save', async function (next: Function) {
     if (!user.isModified('password')) return next();
     const salt = await bcryptjs.genSalt(config.KEY.SALT);
     user.password = await bcryptjs.hash(<string>user.password, salt);
-    next();
+    return next();
 });
 
 

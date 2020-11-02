@@ -15,11 +15,12 @@ export async function authorized(req: Request, res: Response, next: Function) {
 
   try {
     var payload: Token = <Token>verify(token, <Secret>config.KEY.SECRET);
-    const user: IUser | null = await User.findById(payload.sub);
+    const user: IUser | null = await User.findById(payload.sub).select('-password');
 
     if (
       !user ||
-      payload?.nickname !== user.nickname ||
+      user.role !== payload?.role ||
+      user.nickname !== payload?.nickname ||
       <number>payload?.exp <= dayjs().unix()
     ) return res.status(423).send({ message: "Access denied" });
 
@@ -34,42 +35,53 @@ export async function authorized(req: Request, res: Response, next: Function) {
     nickname: payload.nickname,
     role: payload.role,
   };
+
+  delete req.headers.authorization
 
   return next();
 }
 
-export async function authAdmin(req: Request, res: Response, next: Function) {
-  if (req.user && req.user.role & config.ALLOW.ADMIN) return next();
+export function authRead({ user, headers }: Request, res: Response, next: Function) {
+  if (
+    !user ||
+    user?.role ^ config.AUTH.READ ||
+    headers.authorization
+  ) return res.status(423).send({ message: "Access denied" });
+  else return next();
+}
 
-  if (!req.headers.authorization) return res.status(400).send({ message: "Client has not sent Token" });
+export function authWrite({ user, headers }: Request, res: Response, next: Function) {
+  if (
+    !user ||
+    user?.role ^ config.AUTH.WRITE ||
+    headers.authorization
+  ) return res.status(423).send({ message: "Access denied" });
+  else return next();
+}
 
-  const token = req.headers.authorization.replace(/['"]+/g, "").split(" ")[1];
+export function authEdit({ user, headers }: Request, res: Response, next: Function) {
+  if (
+    !user ||
+    user?.role ^ config.AUTH.EDIT ||
+    headers.authorization
+  ) return res.status(423).send({ message: "Access denied" });
+  else return next();
+}
 
-  if (token === "null") return res.status(403).send({ message: "The user does not have the necessary credentials for this operation" });
+export function authGrant({ user, headers }: Request, res: Response, next: Function) {
+  if (
+    !user ||
+    user?.role ^ config.AUTH.GRANT ||
+    headers.authorization
+  ) return res.status(423).send({ message: "Access denied" });
+  else return next();
+}
 
-  try {
-    var payload: Token = <Token>verify(token, <Secret>config.KEY.SECRET);
-    const user: IUser | null = await User.findById(payload.sub);
-
-    if (
-      !user ||
-      user.role ^ config.ALLOW.ADMIN ||
-      payload?.nickname !== user.nickname ||
-      payload?.role ^ config.ALLOW.ADMIN ||
-      <number>payload?.exp <= dayjs().unix()
-    ) return res.status(423).send({ message: "Access denied" });
-
-    delete payload.iat;
-    delete payload.exp;
-  } catch {
-    return res.status(409).send({ message: "Error decrypting token" });
-  }
-
-  req.user = <IUser>{
-    _id: payload.sub,
-    nickname: payload.nickname,
-    role: payload.role,
-  };
-
-  return next();
+export function authAdmin({ user, headers }: Request, res: Response, next: Function) {
+  if (
+    !user ||
+    user?.role ^ config.AUTH.ADMIN ||
+    headers.authorization
+  ) return res.status(423).send({ message: "Access denied" });
+  else return next();
 }

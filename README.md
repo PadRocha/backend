@@ -1,6 +1,6 @@
 # Backend Template
 
-by Cétr!co.Productions
+by Cétr!co.Productions <img src=".\assets\icon-1024x1024.png" style="zoom:2%;" />
 
 [TOC]
 
@@ -53,12 +53,12 @@ Compile all Typescript file.
 
 ### Developer dependencies
 
-| Package                                                  | Purpose                                                                                                                                                                                                                                                                    |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [@types/node](https://www.npmjs.com/package/@types/node) | This package contains type definitions for Node.js (http://nodejs.org/).                                                                                                                                                                                                   |
-| [apidoc](https://apidocjs.com/)                          | apiDoc creates a documentation from API annotations in your source code.                                                                                                                                                                                                   |
-| [tsc-watch](https://www.npmjs.com/package/tsc-watch)     | `tsc-watch` starts a TypeScript compiler with `--watch` parameter, with the ability to react to compilation status. `tsc-watch` was created to allow an easy dev process with  TypeScript. Commonly used to restart a node server, similar to nodemon  but for TypeScript. |
-| [typescript](https://www.typescriptlang.org/docs)        | TypeScript is an open-source language which builds on JavaScript, one of the world’s most used tools, by adding static type definitions.                                                                                                                                   |
+| Package                                                  | Purpose                                                                                                                                                                                                                                                                   |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [@types/node](https://www.npmjs.com/package/@types/node) | This package contains type definitions for Node.js (http://nodejs.org/).                                                                                                                                                                                                  |
+| [apidoc](https://apidocjs.com/)                          | apiDoc creates a documentation from API annotations in your source code.                                                                                                                                                                                                  |
+| [tsc-watch](https://www.npmjs.com/package/tsc-watch)     | `tsc-watch` starts a TypeScript compiler with `--watch` parameter, with the ability to react to compilation status. `tsc-watch` was created to AUTH an easy dev process with  TypeScript. Commonly used to restart a node server, similar to nodemon  but for TypeScript. |
+| [typescript](https://www.typescriptlang.org/docs)        | TypeScript is an open-source language which builds on JavaScript, one of the world’s most used tools, by adding static type definitions.                                                                                                                                  |
 
 ### Optional dependencies
 
@@ -83,28 +83,41 @@ Compile all Typescript file.
 
 > The controller class handles incoming requests, validates them and sends the response data back to the client.
 
-- User
-
 ### Middlewares
 
 > This folder includes all the API’s global middlewares like authentication, compression, request logging etc.
-
-- Auth
 
 ### Models
 
 > The model represents the database model for its component.
 
-- User
+Template model code.
+
+```typescript
+import { Document, model, Schema } from 'mongoose';
+export interface IModel extends Document {};
+const modelSchema = new Schema<IModel>({});
+export default model<IModel>('Model', modelSchema);
+```
+
+Template model code with [mongoose-paginate-v2](https://www.npmjs.com/package/mongoose-paginate-v2) plug in.
+
+```typescript
+import { Document, model, PaginateModel, Schema } from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
+export interface IModel extends Document {};
+const modelSchema = new Schema<IModel>({});
+modelSchema.plugin(mongoosePaginate);
+interface ModelModel<T extends Document> extends PaginateModel<T> { };
+export default model<IModel>('Line', modelSchema) as ModelModel<IModel>;
+```
 
 ### Routes
 
 > Here we define our API endpoints for the corresponding component and assign the *controller* methods to them. Moreover we can do things like authorization (e.g.  JWT), permission validation (e.g. ACL) or add component specific  middleware.
 
-- Api
-
 ### Services
 
-- JWT
+> Service include functions that can be reusable in different parts of the code.
 
 ## Root src files
