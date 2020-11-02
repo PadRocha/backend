@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import * as userController from '../controllers/user.controller';
-import { authAdmin, authorized, authRead } from '../middlewares/auth';
+import { authAdmin, authorized } from '../middlewares/auth';
 
 /*------------------------------------------------------------------*/
 // Api Routes
@@ -19,7 +19,7 @@ router.route('/login')
     .post(userController.loginUser);
 
 router.route('/user')
-    .get(authorized, authRead, userController.returnUser);
+    .get(authorized, userController.returnUser);
 
 /*------------------------------------------------------------------*/
 
