@@ -13,7 +13,7 @@ export interface Token {
 }
 
 export default function createToken({ _id, nickname, role }: IUser) {
-  var payload: Token = {
+  const payload: Token = {
     sub: _id,
     nickname: nickname,
     role: role,

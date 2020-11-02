@@ -8,36 +8,28 @@ import { Token } from '../services/jwt';
 
 export async function authorized(req: Request, res: Response, next: Function) {
   if (!req.headers.authorization) return res.status(400).send({ message: "Client has not sent Token" });
-
   const token = req.headers.authorization.replace(/['"]+/g, "").split(" ")[1];
-
+  delete req.headers.authorization
   if (token === "null") return res.status(403).send({ message: "The user does not have the necessary credentials for this operation" });
-
   try {
     var payload: Token = <Token>verify(token, <Secret>config.KEY.SECRET);
     const user: IUser | null = await User.findById(payload.sub).select('-password');
-
     if (
       !user ||
       user.role !== payload?.role ||
       user.nickname !== payload?.nickname ||
       <number>payload?.exp <= dayjs().unix()
     ) return res.status(423).send({ message: "Access denied" });
-
     delete payload.iat;
     delete payload.exp;
   } catch {
     return res.status(409).send({ message: "Error decrypting token" });
   }
-
   req.user = <IUser>{
     _id: payload.sub,
     nickname: payload.nickname,
     role: payload.role,
   };
-
-  delete req.headers.authorization
-
   return next();
 }
 
