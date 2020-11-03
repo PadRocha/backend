@@ -26,7 +26,7 @@ const userSchema = new Schema<IUser>({
     },
     role: {
         type: Number,
-        default: 2,
+        default: config.AUTH.READ | config.AUTH.WRITE,
         required: true
     }
 });

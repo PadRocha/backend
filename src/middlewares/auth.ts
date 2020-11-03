@@ -36,7 +36,7 @@ export async function authorized(req: Request, res: Response, next: Function) {
 export function authRead({ user, headers }: Request, res: Response, next: Function) {
   if (
     !user ||
-    user?.role ^ config.AUTH.READ ||
+    !(user?.role & config.AUTH.READ) ||
     headers.authorization
   ) return res.status(423).send({ message: "Access denied" });
   else return next();
@@ -45,7 +45,7 @@ export function authRead({ user, headers }: Request, res: Response, next: Functi
 export function authWrite({ user, headers }: Request, res: Response, next: Function) {
   if (
     !user ||
-    user?.role ^ config.AUTH.WRITE ||
+    !(user?.role & config.AUTH.WRITE) ||
     headers.authorization
   ) return res.status(423).send({ message: "Access denied" });
   else return next();
@@ -54,7 +54,7 @@ export function authWrite({ user, headers }: Request, res: Response, next: Funct
 export function authEdit({ user, headers }: Request, res: Response, next: Function) {
   if (
     !user ||
-    user?.role ^ config.AUTH.EDIT ||
+    !(user?.role & config.AUTH.EDIT) ||
     headers.authorization
   ) return res.status(423).send({ message: "Access denied" });
   else return next();
@@ -63,7 +63,7 @@ export function authEdit({ user, headers }: Request, res: Response, next: Functi
 export function authGrant({ user, headers }: Request, res: Response, next: Function) {
   if (
     !user ||
-    user?.role ^ config.AUTH.GRANT ||
+    !(user?.role & config.AUTH.GRANT) ||
     headers.authorization
   ) return res.status(423).send({ message: "Access denied" });
   else return next();
@@ -72,7 +72,7 @@ export function authGrant({ user, headers }: Request, res: Response, next: Funct
 export function authAdmin({ user, headers }: Request, res: Response, next: Function) {
   if (
     !user ||
-    user?.role ^ config.AUTH.ADMIN ||
+    !(user?.role & config.AUTH.ADMIN) ||
     headers.authorization
   ) return res.status(423).send({ message: "Access denied" });
   else return next();
