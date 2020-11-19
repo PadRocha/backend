@@ -1,11 +1,8 @@
-/*------------------------------------------------------------------*/
-// Data Base Connection
-/*------------------------------------------------------------------*/
-
 import mongoose, { ConnectionOptions } from 'mongoose';
-const fmt = require('fmt');
 
 import config from './config/config';
+
+const fmt = require('fmt');
 
 const dbOptions: ConnectionOptions = {
     useNewUrlParser: true,

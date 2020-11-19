@@ -3,14 +3,14 @@ import { Router } from 'express';
 import * as userController from '../controllers/user.controller';
 import { authAdmin, authorized } from '../middlewares/auth';
 
-/*------------------------------------------------------------------*/
-// Api Routes
-/*------------------------------------------------------------------*/
+//*------------------------------------------------------------------*/
+// * Api Routes
+//*------------------------------------------------------------------*/
 const router = Router();
 
-/*------------------------------------------------------------------*/
-// User Routes
-/*------------------------------------------------------------------*/
+//*------------------------------------------------------------------*/
+// * User Routes
+//*------------------------------------------------------------------*/
 
 router.route('/register')
     .post(authAdmin, userController.registerUser);
@@ -25,9 +25,9 @@ router.route('/user')
 
 export default router;
 
-/*------------------------------------------------------------------*/
-// * Api Docs Definitions
-/*------------------------------------------------------------------*/
+//?------------------------------------------------------------------*/
+// ? Api Docs Definitions
+//?------------------------------------------------------------------*/
 
 /**
  * @apiDefine admin Admin access only
@@ -40,7 +40,7 @@ export default router;
 */
 
 /**
- * @apiDefine header
+ * @apiDefine header Header Authorization
  * @apiHeader {String} Authorization Users unique access-key.
  *
  * @apiHeaderExample {json} Request-E:
@@ -48,6 +48,10 @@ export default router;
  *           "Authorization": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCI8.eyJzdWIiOiI1ZTZiZWVmMWNmNjI3OTVkZTBlMWU3OTEiLCJuaWNrbmFtZSI6InBhZHJvY2hhIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNTg4MzkxNTUxLCJleHAiOjE1OTA5ODM1NTF9.kXECNDTfHt6yMdpR__InB6wu0Z8FKs8083mBnyVVaWg"
  *      }
  */
+
+//*------------------------------------------------------------------*/
+// * Define Params
+//*------------------------------------------------------------------*/
 
 /**
  * @apiDefine page
@@ -59,6 +63,10 @@ export default router;
  * @apiParam (params) {string} id Regular expression that matches the start.
  */
 
+ //*------------------------------------------------------------------*/
+ // * Define Sucess
+ //*------------------------------------------------------------------*/
+
 /**
  * @apiDefine SuccessToken
  * @apiSuccess {json} token User Token identificaction
@@ -69,6 +77,10 @@ export default router;
  *           "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCI8.eyJzdWIiOiI1ZTZiZWVmMWNmNjI3OTVkZTBlMWU3OTEiLCJuaWNrbmFtZSI6InBhZHJvY2hhIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNTg4MzkxNTUxLCJleHAiOjE1OTA5ODM1NTF9.kXECNDTfHt6yMdpR__InB6wu0Z8FKs8083mBnyVVaWg"
  *      }
  */
+
+//*------------------------------------------------------------------*/
+// * Define Errors
+//*------------------------------------------------------------------*/
 
 /**
  * @apiDefine HeaderErrors

@@ -1,18 +1,19 @@
+import cors from 'cors';
 import express, { Request, Response } from 'express';
-import morgan from "morgan";
-import cors from "cors";
-import helmet from "helmet";
-import path from "path";
-import multer from "multer";
-import { v4 as uuidv4 } from "uuid";
-import config from "./config/config";
-import api from "./routes/api.routes";
+import helmet from 'helmet';
+import morgan from 'morgan';
+import multer from 'multer';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
+
+import config from './config/config';
+import api from './routes/api.routes';
 
 const app = express();
 
-/*------------------------------------------------------------------*/
-// Settings
-/*------------------------------------------------------------------*/
+//*------------------------------------------------------------------*/
+// * Settings
+//*------------------------------------------------------------------*/
 
 app.set('pkg', require('../package.json'));
 app.set("trust proxy", true);
@@ -24,9 +25,9 @@ const storage = multer.diskStorage({
     cb(null, uuidv4() + path.extname(file.originalname).toLowerCase()),
 });
 
-/*------------------------------------------------------------------*/
-// Middlewares
-/*------------------------------------------------------------------*/
+//*------------------------------------------------------------------*/
+// * Middlewares
+//*------------------------------------------------------------------*/
 
 if (app.get("env") === "development") {
   app.use(morgan("dev"));
@@ -52,9 +53,9 @@ app.use(
   }).single("image"),
 );
 
-/*------------------------------------------------------------------*/
-// Routes
-/*------------------------------------------------------------------*/
+//*------------------------------------------------------------------*/
+// * Routes
+//*------------------------------------------------------------------*/
 
 app.get('/', (req: Request, res: Response) => res.json({
   name: app.get('pkg').name,
