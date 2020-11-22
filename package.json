@@ -1,6 +1,6 @@
 {
     "name": "backend",
-    "version": "1.0.0",
+    "version": "2.3.1",
     "description": "Ts RES API",
     "main": "index.js",
     "scripts": {
@@ -23,7 +23,6 @@
         "dayjs": "^1.8.28",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
-        "fmt": "^1.2.0",
         "fs-extra": "^9.0.1",
         "helmet": "^3.22.0",
         "jsonwebtoken": "^8.5.1",

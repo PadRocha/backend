@@ -1,8 +1,7 @@
 import mongoose, { ConnectionOptions } from 'mongoose';
 
 import config from './config/config';
-
-const fmt = require('fmt');
+import { dump, field, sep } from './config/fmt';
 
 const dbOptions: ConnectionOptions = {
     useNewUrlParser: true,
@@ -13,7 +12,7 @@ const dbOptions: ConnectionOptions = {
 }
 
 mongoose.connect(config.DB.URI, dbOptions, err => {
-    if (err) console.error('\x1b[37mDB: \x1b[31merror >\x1b[0m', err);
-    else fmt.field('\x1b[37mDB', '\x1b[33mconnected\x1b[0m');
-    fmt.sep();
+    if (err) dump(err, '\x1b[37mDB: \x1b[31merror\x1b[0m');
+    else field('\x1b[37mDB', '\x1b[33mconnected\x1b[0m');
+    sep();
 });
