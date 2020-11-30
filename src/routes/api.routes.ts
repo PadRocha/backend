@@ -13,7 +13,7 @@ const router = Router();
 //*------------------------------------------------------------------*/
 
 router.route('/register')
-    .post(authAdmin, userController.registerUser);
+    .post(authorized, authAdmin, userController.registerUser);
 
 router.route('/login')
     .post(userController.loginUser);
