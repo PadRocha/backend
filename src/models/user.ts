@@ -27,7 +27,13 @@ const userSchema = new Schema<IUser>({
     role: {
         type: Number,
         default: config.AUTH.READ | config.AUTH.WRITE,
-        required: true
+        required: true,
+        validate: {
+            validator(role: number) {
+                return Object.values(config.AUTH).includes(role);
+            },
+            message: 'Role not exists'
+        }
     }
 });
 
