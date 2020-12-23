@@ -18,7 +18,7 @@ const app = express();
 app.set('pkg', require('../package.json'));
 app.set("trust proxy", true);
 app.set("env", config.ENV);
-app.set("port", process.env.PORT || 4000);
+app.set("port", config.PORT);
 const storage = multer.diskStorage({
   destination: path.join(__dirname, "uploads"),
   filename: (req, file, cb) =>

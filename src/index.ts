@@ -1,6 +1,5 @@
 import './database';
 
-import dotenv from 'dotenv';
 import fs from 'fs-extra';
 import path from 'path';
 
@@ -15,8 +14,6 @@ import { field, sep, title } from './config/fmt';
  * # ╚██████╗███████╗   ██║   ██║  ██║██╗╚██████╗╚██████╔╝██╗██║     ██║  ██║╚██████╔╝██████╔╝╚██████╔╝╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
  * #  ╚═════╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═════╝ ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═════╝  ╚═════╝  ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
  */
-
-dotenv.config();
 
 (async () => {
   const simba = await fs.readFileSync(path.join(__dirname, '../assets/Simba-ASCII-78-black.ans'));

@@ -1,8 +1,13 @@
+import { config } from 'dotenv';
+
+config();
+
 export default {
     ENV: process.env.NODE_ENV || 'development',
+    PORT: Number(process.env.PORT) || 4000,
     KEY: {
         SECRET: process.env.SECRET_KEY || '//password',
-        SALT: Number(process.env.SALT) || 11
+        SALT: Number(process.env.SALT) || 11,
     },
     DB: {
         URI: process.env.MONGO_URI || 'mongodb://localhost/database',
