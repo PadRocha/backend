@@ -15,10 +15,10 @@ export interface Token {
 export default function createToken({ _id, nickname, role }: IUser) {
   const payload: Token = {
     sub: _id,
-    nickname: nickname,
-    role: role,
+    nickname,
+    role,
     iat: dayjs().unix(),
-    exp: dayjs().add(30, "day").unix(),
+    exp: dayjs().add(30, 'day').unix(),
   };
   return sign(payload, <Secret>config.KEY.SECRET);
 }
