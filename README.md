@@ -1,6 +1,6 @@
 # Backend Template
 
-by Cétr!co.Productions <img src=".\assets\icon-1024x1024.png" style="zoom:2%;" />
+by Cétr!co.Productions <img src="Assets/icon.png" width="2%">
 
 [TOC]
 
