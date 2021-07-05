@@ -8,7 +8,7 @@ const dbOptions: ConnectionOptions = {
     useCreateIndex: true,
     useFindAndModify: false,
     useUnifiedTopology: true,
-    autoIndex: false,
+    autoIndex: true,
 };
 
 (async () => {

@@ -1,10 +1,14 @@
 import { Request, Response } from 'express';
 
 import { UserModel, IUser } from '../models/user';
-import { intoRoles } from '../services/roles';
+import { hasValidRoles, intoRole, intoRoles } from '../services/roles';
 
 export function registerUser({ body }: Request, res: Response) {
     if (!body) return res.status(400).send({ message: 'Client has not sent params' });
+    if (!hasValidRoles(body?.roles) && body?.roles)
+        return res.status(400).send({ message: 'Roles bundle not supported' });
+    else if (body?.roles)
+        body.role = intoRole(body.roles);
     new UserModel(body).save((err, userStored: IUser) => {
         if (err) return res.status(409).send({ message: 'Internal error, probably error with params' });
         if (!userStored) return res.status(204).send({ message: 'Saved and is not returning any content' });
