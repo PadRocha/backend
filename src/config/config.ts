@@ -1,10 +1,10 @@
-import { config } from 'dotenv';
+import dotenv from 'dotenv';
 
-config();
+dotenv.config();
 
-export default {
+export const config = {
     ENV: process.env.NODE_ENV || 'development',
-    PORT: Number(process.env.PORT) || 4000,
+    PORT: Number(process.env.PORT) || 5885,
     KEY: {
         SECRET: process.env.SECRET_KEY || '//password',
         SALT: Number(process.env.SALT) || 11,
@@ -27,4 +27,4 @@ export default {
     //     KEY: process.env.CLOUDINARY_KEY,
     //     SECRET: process.env.CLOUDINARY_SECRET,
     // },
-}
+} as const;

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import * as userController from '../controllers/user.controller';
-import { authAdmin, authorized } from '../middlewares/auth';
+import { authorized } from '../middlewares/auth';
 
 //*------------------------------------------------------------------*/
 // * Api Routes
@@ -13,13 +13,16 @@ const router = Router();
 //*------------------------------------------------------------------*/
 
 router.route('/register')
-    .post(authorized, authAdmin, userController.registerUser);
+    .post(userController.registerUser);
 
 router.route('/login')
     .post(userController.loginUser);
 
 router.route('/user')
     .get(authorized, userController.returnUser);
+
+router.route('/user/list')
+    .get(userController.listUser);
 
 /*------------------------------------------------------------------*/
 
