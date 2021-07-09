@@ -1,6 +1,6 @@
 import { Model } from "mongoose";
 
-export interface countDocsModel {
+export interface ICountDocs {
     countDocs(pipeline: unknown[]): Promise<number>;
 }
 

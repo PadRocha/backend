@@ -11,7 +11,7 @@ export interface paginateMetadata {
     totalPages: number;
 }
 
-export interface paginateModel {
+export interface IPaginate {
     paginate(
         limit: number,
         page: number,
