@@ -1,5 +1,9 @@
 import { Model } from "mongoose";
 
+export interface countDocsModel {
+    countDocs(pipeline: unknown[]): Promise<number>;
+}
+
 export function countDocs(this: Model<any>, pipeline: unknown[]) {
     return this.aggregate(pipeline.concat({
         $group: {
