@@ -108,13 +108,9 @@ const defaultSchema = new Schema<IDefault, IDefaultModel>({
 
 /*------------------------------------------------------------------*/
 
-export const DefaultModel = model<IDefault, IDefaultModel>('Default', defaultSchema);
+export const DefaultModel = model('Default', defaultSchema) as IDefaultModel;
 
-try {
-    DefaultModel.createIndexes();
-} catch {
-    //
-}
+DefaultModel.createIndexes();
 ```
 
 ### Routes
@@ -125,14 +121,39 @@ try {
 
 > Service include functions that can be reusable in different parts of the code.
 
+#### Service Model usage
+
+##### countDocs
+
+```typescript
+import { countDocs, ICountDocs } from '../services/countDocs';
+
+export interface IDefaultModel extends Model<IDefault>, ICountDocs {
+    //
+}
+
+defaultSchema.statics.countDocs = countDocs;
+```
+
+##### paginate
+
+```typescript
+import { paginate, IPaginate } from '../services/countDocs';
+
+export interface IDefaultModel extends Model<IDefault>, IPaginate {
+    //
+}
+
+defaultSchema.statics.paginate = paginate;
+```
+
 ## Default templates
 
-## Pagination
+### Pagination
 
 ```typescript
 export function listDefaultPage({ params }: Request, res: Response) {
     const page = !isNaN(Number(params.page)) ? Number(params.page) : 1;
-
     DefaultModel.find()
         .skip(config.LIMIT.DEFAULT * (page - 1))
         .limit(config.LIMIT.DEFAULT)
@@ -140,56 +161,51 @@ export function listDefaultPage({ params }: Request, res: Response) {
             if (err) return res.status(409).send({ message: 'Internal error, probably error with params' });
             if (!data) return res.status(404).send({ message: 'Document not found' });
 
-            const totalDocs = await DefaultModel.countDocuments();
-            const totalPages = Math.ceil(totalDocs / config.LIMIT.DEFAULT);
-            const hasNextPage = totalPages > page;
-            const hasPrevPage = page > 1;
-            return res.status(200).send({
-                data,
-                totalDocs,
-                limit: config.LIMIT.DEFAULT,
-                page,
-                nextPage: hasNextPage ? page + 1 : null,
-                prevPage: hasPrevPage ? page - 1 : null,
-                hasNextPage,
-                hasPrevPage,
-                totalPages
-            });
+            const metadata = await LineModel.paginate(config.LIMIT.DEFAULT, page)
+            return res.status(200).send({ data, metadata });
         });
 }
 ```
 
-## Merge pagination
+### Merge pagination
 
 ```typescript
 export function listDefaultPage({ query }: Request, res: Response) {
     const page = !isNaN(Number(query.page)) ? Number(query.page) : 1;
-    
     const find = DefaultModel.find()
         .skip(config.LIMIT.DEFAULT * (page - 1))
         .limit(config.LIMIT.DEFAULT);
-
     const search = DefaultModel.find();
-    
     find.merge(search).exec(async (err, data) => {
             if (err) return res.status(409).send({ message: 'Internal error, probably error with params' });
             if (!data) return res.status(404).send({ message: 'Document not found' });
 
-            const totalDocs = await DefaultModel.countDocuments().merge(search);
-            const totalPages = Math.ceil(totalDocs / config.LIMIT.DEFAULT);
-            const hasNextPage = totalPages > page;
-            const hasPrevPage = page > 1;
-            return res.status(200).send({
-                data,
-                totalDocs,
-                limit: config.LIMIT.DEFAULT,
-                page,
-                nextPage: hasNextPage ? page + 1 : null,
-                prevPage: hasPrevPage ? page - 1 : null,
-                hasNextPage,
-                hasPrevPage,
-                totalPages
-            });
+            const metadata = await LineModel.paginate(config.LIMIT.DEFAULT, page, search)
+            return res.status(200).send({ data, metadata });
+        });
+}
+```
+
+### Aggregate pagination
+
+```typescript
+export function listDefaultPage({ query }: Request, res: Response) {
+    const page = !isNaN(Number(query.page)) ? Number(query.page) : 1;
+    const pipeline = new Array<unknown>({
+            $match: {
+                
+            }
+        });
+    DefaultModel.aggregate(pipeline.concat({
+            $skip: config.LIMIT.DEFAULT * (page - 1)
+        }, {
+            $limit: config.LIMIT.DEFAULT
+        })).exec(async (err, data) => {
+            if (err) return res.status(409).send({ message: 'Internal error, probably error with params' });
+            if (!data) return res.status(404).send({ message: 'Document not found' });
+
+            const metadata = await LineModel.paginate(config.LIMIT.DEFAULT, page, pipeline)
+            return res.status(200).send({ data, metadata });
         });
 }
 ```

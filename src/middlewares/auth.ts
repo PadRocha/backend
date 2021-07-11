@@ -6,11 +6,12 @@ import { config } from '../config/config';
 import { UserModel, IUser, Token } from '../models/user';
 
 export async function authorized(req: Request, res: Response, next: (err?: Error) => void) {
-  if (!req.headers.authorization?.startsWith('bearer: ') && !req.headers.authorization?.includes('"'))
+  if (!req.headers.authorization?.startsWith('Bearer'))
     return res.status(400).send({ message: 'Client has not sent Token' });
-  const token = req.headers.authorization.replace(/['"]+/g, '').split(' ').pop() as string;
+  const token = req.headers.authorization.split(' ').pop();
   delete req.headers.authorization
-  if (!token) return res.status(403).send({ message: 'The user does not have the necessary credentials for this operation' });
+  if (!token)
+    return res.status(403).send({ message: 'The user does not have the necessary credentials for this operation' });
   try {
     var payload: Token = <Token>verify(token, <Secret>config.KEY.SECRET);
     const user: IUser | null = await UserModel.findById(payload.sub).select('-password');
